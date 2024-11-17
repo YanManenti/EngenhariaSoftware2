@@ -45,15 +45,15 @@ public class Controller {
         return memoria;
     }
 
-    @GetMapping("/processadores")
-    public List<Processador> allProcessadores() {
-        return processadorRepository.findAll();
-    }
+//    @GetMapping("/processadores")
+//    public List<Processador> allProcessadores() {
+//        return processadorRepository.findAll();
+//    }
 
-    @GetMapping("/processador/{id}")
-    public Processador processador(@PathVariable String id) {
-        return processadorRepository.findById(id).orElse(null);
-    }
+//    @GetMapping("/processador/{id}")
+//    public Processador processador(@PathVariable String id) {
+//        return processadorRepository.findById(id).orElse(null);
+//    }
 
     @GetMapping("/placas-mae")
     public List<PlacaMae> allPlacasMae() {
