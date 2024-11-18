@@ -1,10 +1,9 @@
 package com.example.ES2.controllers;
 
-import com.example.ES2.models.Processador;
-import com.example.ES2.repositories.ProcessadorRepository;
+import com.example.ES2.models.Cpu;
+import com.example.ES2.repositories.CpuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,20 +14,15 @@ import java.util.List;
 public class CpuController {
 
     @Autowired
-    private ProcessadorRepository processadorRepository;
+    private CpuRepository cpuRepository;
 
     @GetMapping
     public String exemplo(){
         return "Exemplo de /api/cpu";
     }
 
-    @GetMapping("/processadores")
-    public List<Processador> allProcessadores() {
-        return processadorRepository.findAll();
-    }
-
-    @GetMapping("/processador/{id}")
-    public Processador processador(@PathVariable String id) {
-        return processadorRepository.findById(id).orElse(null);
+    @GetMapping("/all")
+    public List<Cpu> allCpus() {
+        return cpuRepository.findAll();
     }
 }

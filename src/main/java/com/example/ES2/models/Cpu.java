@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "cpu")
 @Data
-public class Processador {
+public class Cpu {
     @Id
     private String id;
     @Indexed(unique = true)
