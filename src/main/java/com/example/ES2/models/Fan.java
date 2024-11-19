@@ -1,6 +1,7 @@
 package com.example.ES2.models;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,13 +10,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Fan {
     @Id
-    private String id;
     @Indexed(unique = true)
-            private Object Airflow;
-            private String Color;
-            private String Name;
-            private Object Noise_Level;
-            private Boolean PWM;
-            private Object Rpm;
-            private Integer Size;
+    private String id;
+    @Getter
+    private Object Airflow;
+    @Getter
+    private String Color;
+    @Getter
+    private String Name;
+    @Getter
+    private Object Noise_Level;
+    @Getter
+    private Boolean PWM;
+    @Getter
+    private Object Rpm;
+    @Getter
+    private Integer Size;
 }

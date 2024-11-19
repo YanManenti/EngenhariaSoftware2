@@ -1,6 +1,7 @@
 package com.example.ES2.models;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,21 +10,36 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Case {
     @Id
-    private String id;
     @Indexed(unique = true)
-            private String Name;
-            private String Manufacturer;
-            private String Type;
-            private String Color;
-            private String Dimensions;
-            private String Volume;
-            private String Drive_Bays;
-            private String Expansion_Slots;
-            private String Front_Panel_USB;
-            private String Maximum_Video_Card_Length;
-            private String Motherboard_Form_Factor;
-            private String Part_Numero;
-            private String Power_Supply;
-            private String Power_Supply_Shroud;
-            private String Side_Panel;
+    private String id;
+    @Getter
+    private String Name;
+    @Getter
+    private String Manufacturer;
+    @Getter
+    private String Type;
+    @Getter
+    private String Color;
+    @Getter
+    private String Dimensions;
+    @Getter
+    private String Volume;
+    @Getter
+    private String Drive_Bays;
+    @Getter
+    private String Expansion_Slots;
+    @Getter
+    private String Front_Panel_USB;
+    @Getter
+    private String Maximum_Video_Card_Length;
+    @Getter
+    private String Motherboard_Form_Factor;
+    @Getter
+    private String Part_Numero;
+    @Getter
+    private String Power_Supply;
+    @Getter
+    private String Power_Supply_Shroud;
+    @Getter
+    private String Side_Panel;
 }

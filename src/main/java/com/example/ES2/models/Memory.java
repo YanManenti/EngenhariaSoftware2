@@ -1,6 +1,7 @@
 package com.example.ES2.models;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,20 +10,34 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Memory {
     @Id
-    private String id;
     @Indexed(unique = true)
-            private String Name;
-            private String Manufacturer;
-            private String Speed;
-            private String Modules;
-            private String Color;
-            private String Voltage;
-            private String Timing;
-            private Integer CAS_Latency;
-            private String ECC_Registered;
-            private String First_Word_Latency;
-            private String Form_Factor;
-            private String Heat_Spreader;
-            private String Part_Numero;
-            private Integer Specs_Number;
+    private String id;
+    @Getter
+    private String Name;
+    @Getter
+    private String Manufacturer;
+    @Getter
+    private String Speed;
+    @Getter
+    private String Modules;
+    @Getter
+    private String Color;
+    @Getter
+    private String Voltage;
+    @Getter
+    private String Timing;
+    @Getter
+    private Integer CAS_Latency;
+    @Getter
+    private String ECC_Registered;
+    @Getter
+    private String First_Word_Latency;
+    @Getter
+    private String Form_Factor;
+    @Getter
+    private String Heat_Spreader;
+    @Getter
+    private String Part_Numero;
+    @Getter
+    private Integer Specs_Number;
 }

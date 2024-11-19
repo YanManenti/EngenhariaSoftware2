@@ -1,6 +1,7 @@
 package com.example.ES2.models;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,18 +10,30 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class CpuCooler {
     @Id
-    private String id;
     @Indexed(unique = true)
-            private String Name;
-            private String Manufacturer;
-            private String Model;
-            private String Color;
-            private String Height;
-            private String Fanless;
-            private String CPU_Socket;
-            private String Fan_RPM;
-            private String Noise_Level;
-            private String Part_Numero;
-            private String Specs_Number;
-            private String Water_Cooled;
+    private String id;
+    @Getter
+    private String Name;
+    @Getter
+    private String Manufacturer;
+    @Getter
+    private String Model;
+    @Getter
+    private String Color;
+    @Getter
+    private String Height;
+    @Getter
+    private String Fanless;
+    @Getter
+    private String CPU_Socket;
+    @Getter
+    private String Fan_RPM;
+    @Getter
+    private String Noise_Level;
+    @Getter
+    private String Part_Numero;
+    @Getter
+    private String Specs_Number;
+    @Getter
+    private String Water_Cooled;
 }
