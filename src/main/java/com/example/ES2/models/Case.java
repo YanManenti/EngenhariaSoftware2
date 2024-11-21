@@ -1,10 +1,13 @@
 package com.example.ES2.models;
 
+import com.example.ES2.repositories.CaseRepository;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "case")
 @Data
@@ -13,6 +16,7 @@ public class Case {
     @Indexed(unique = true)
     private String id;
     @Getter
+    @Field("Name")
     private String Name;
     @Getter
     private String Manufacturer;
@@ -42,4 +46,5 @@ public class Case {
     private String Power_Supply_Shroud;
     @Getter
     private String Side_Panel;
+
 }
