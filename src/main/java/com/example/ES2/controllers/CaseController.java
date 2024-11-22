@@ -27,9 +27,10 @@ public class CaseController {
         return "Exemplo de /api/case";
     }
 
-    @GetMapping("/all")
-        public ResponseEntity<Page<Case>> allCases(
-            @RequestParam(required = false) String Name,
+    @GetMapping("/paged")
+        public ResponseEntity<Page<Case>> pagedByKey(
+            @RequestParam(defaultValue = "Name") String key,
+            @RequestParam(required = false) String value,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
@@ -37,10 +38,10 @@ public class CaseController {
             Pageable paging = PageRequest.of(page, size);
             Page<Case> pageCases;
 
-            if ("".equals(Name)) {
+            if ("".equals(value)) {
                 pageCases = caseRepository.findAll(paging);
             } else {
-                pageCases = caseRepository.findByNameIsLikeIgnoreCase(paging, Name);
+                pageCases = caseRepository.pagedFindByKeyIgnoreCasing(paging, key, value);
             }
 
             return new ResponseEntity<>(pageCases, HttpStatus.OK);

@@ -7,9 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 public interface CaseRepository extends MongoRepository<Case, String> {
-    @Query("{ 'Name' : {$regex:  ?0,$options: 'i'} }")
-    Page<Case> findByNameIsLikeIgnoreCase(Pageable pageable, String Name);
-
-    Page<Case> findByName(Pageable pageable, String Name);
+    @Query("{ ?0 : {$regex:  ?1,$options: 'i'} }")
+    Page<Case> pagedFindByKeyIgnoreCasing(Pageable pageable, String key, String value);
 }
 
