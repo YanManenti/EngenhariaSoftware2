@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/gpu")
 public class GpuController {
@@ -26,8 +27,8 @@ public class GpuController {
         return "Exemplo de /api/gpu";
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<List<Gpu>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
+    @PostMapping("/all")
+    public ResponseEntity<List<Gpu>> allByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
             Map<String, String> andConditions = new HashMap<>();
             Map<String, List<String>> orConditions = new HashMap<>();

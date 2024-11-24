@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/memory")
 public class MemoryController {
@@ -25,8 +26,8 @@ public class MemoryController {
         return "Exemplo de /api/memory";
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<List<Memory>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
+    @PostMapping("/all")
+    public ResponseEntity<List<Memory>> allByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
             Map<String, String> andConditions = new HashMap<>();
             Map<String, List<String>> orConditions = new HashMap<>();

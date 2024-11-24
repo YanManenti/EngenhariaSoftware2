@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/cpu")
 public class CpuController {
@@ -25,8 +26,8 @@ public class CpuController {
         return "Exemplo de /api/cpu";
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<List<Cpu>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
+    @PostMapping("/all")
+    public ResponseEntity<List<Cpu>> allByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
             Map<String, String> andConditions = new HashMap<>();
             Map<String, List<String>> orConditions = new HashMap<>();
@@ -36,7 +37,7 @@ public class CpuController {
             }
             if (computer != null) {
                 if (computer.getMotherboard() != null) {
-                    andConditions.put("Socket", computer.getMotherboard().getChipset());
+                    andConditions.put("Socket", computer.getMotherboard().getSocket_CPU());
                 }
             }
             List<Cpu> result = cpuRepository.findByDynamicAndConditions(andConditions, orConditions, Cpu.class);

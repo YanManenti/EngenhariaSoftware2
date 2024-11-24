@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/cpucooler")
 public class CpuCoolerController {
@@ -25,8 +26,8 @@ public class CpuCoolerController {
         return "Exemplo de /api/cpucooler";
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<List<CpuCooler>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
+    @PostMapping("/all")
+    public ResponseEntity<List<CpuCooler>> allByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
             Map<String, String> andConditions = new HashMap<>();
             Map<String, List<String>> orConditions = new HashMap<>();

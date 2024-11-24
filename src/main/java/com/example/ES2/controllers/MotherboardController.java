@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/motherboard")
 public class MotherboardController {
@@ -25,8 +26,8 @@ public class MotherboardController {
         return "Exemplo de /api/motherboard";
     }
 
-    @GetMapping("/paged")
-    public ResponseEntity<List<Motherboard>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
+    @PostMapping("/all")
+    public ResponseEntity<List<Motherboard>> allByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
             Map<String, String> andConditions = new HashMap<>();
             Map<String, List<String>> orConditions = new HashMap<>();
