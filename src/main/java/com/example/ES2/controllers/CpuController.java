@@ -1,20 +1,17 @@
 package com.example.ES2.controllers;
 
+import com.example.ES2.models.Computer;
 import com.example.ES2.models.Cpu;
-import com.example.ES2.models.Cpu;
-import com.example.ES2.repositories.CpuRepository;
+import com.example.ES2.repositories.Specific.CpuRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cpu")
@@ -24,28 +21,27 @@ public class CpuController {
     private CpuRepository cpuRepository;
 
     @GetMapping
-    public String exemplo(){
+    public String exemplo() {
         return "Exemplo de /api/cpu";
     }
 
     @GetMapping("/paged")
-    public ResponseEntity<Page<Cpu>> pagedByKey(
-            @RequestParam(defaultValue = "Name") String key,
-            @RequestParam(required = false) String value,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
+    public ResponseEntity<List<Cpu>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
-            Pageable paging = PageRequest.of(page, size);
-            Page<Cpu> pageCpus;
+            Map<String, String> andConditions = new HashMap<>();
+            Map<String, List<String>> orConditions = new HashMap<>();
 
-            if ("".equals(value)) {
-                pageCpus = cpuRepository.findAll(paging);
-            } else {
-                pageCpus = cpuRepository.pagedFindByKeyIgnoreCasing(paging, key, value);
+            if (!StringUtils.isBlank(value)) {
+                andConditions.put("Name", value);
             }
+            if (computer != null) {
+                if (computer.getMotherboard() != null) {
+                    andConditions.put("Socket", computer.getMotherboard().getChipset());
+                }
+            }
+            List<Cpu> result = cpuRepository.findByDynamicAndConditions(andConditions, orConditions, Cpu.class);
 
-            return new ResponseEntity<>(pageCpus, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

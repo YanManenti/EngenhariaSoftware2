@@ -1,20 +1,18 @@
 package com.example.ES2.controllers;
 
+import com.example.ES2.models.Computer;
 import com.example.ES2.models.Gpu;
-import com.example.ES2.models.Gpu;
-import com.example.ES2.repositories.GpuRepository;
+import com.example.ES2.repositories.Specific.GpuRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/gpu")
@@ -24,28 +22,41 @@ public class GpuController {
     GpuRepository gpuRepository;
 
     @GetMapping
-    public String exemplo(){
+    public String exemplo() {
         return "Exemplo de /api/gpu";
     }
 
     @GetMapping("/paged")
-    public ResponseEntity<Page<Gpu>> pagedByKey(
-            @RequestParam(defaultValue = "Name") String key,
-            @RequestParam(required = false) String value,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
+    public ResponseEntity<List<Gpu>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
-            Pageable paging = PageRequest.of(page, size);
-            Page<Gpu> pageGpus;
+            Map<String, String> andConditions = new HashMap<>();
+            Map<String, List<String>> orConditions = new HashMap<>();
 
-            if ("".equals(value)) {
-                pageGpus = gpuRepository.findAll(paging);
-            } else {
-                pageGpus = gpuRepository.pagedFindByKeyIgnoreCasing(paging, key, value);
+            if (!StringUtils.isBlank(value)) {
+                andConditions.put("Name", value);
             }
 
-            return new ResponseEntity<>(pageGpus, HttpStatus.OK);
+            if (computer != null) {
+                if (computer.getMotherboard() != null) {
+                    orConditions.put("Interface", new ArrayList<>());
+                    if (computer.getMotherboard().getPCIe_x16_Slots() > 0) {
+                        orConditions.get("Interface").add("PCIe x16");
+                    }
+                    if (computer.getMotherboard().getPCIe_x8_Slots() > 0) {
+                        orConditions.get("Interface").add("PCIe x8");
+                    }
+                    if (computer.getMotherboard().getPCIe_x4_Slots() > 0) {
+                        orConditions.get("Interface").add("PCIe x4");
+                    }
+                    if (computer.getMotherboard().getPCIe_x1_Slots() > 0) {
+                        orConditions.get("Interface").add("PCIe x1");
+                    }
+                }
+            }
+
+            List<Gpu> result = gpuRepository.findByDynamicAndConditions(andConditions, orConditions, Gpu.class);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

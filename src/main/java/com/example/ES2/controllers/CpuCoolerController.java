@@ -1,20 +1,17 @@
 package com.example.ES2.controllers;
 
+import com.example.ES2.models.Computer;
 import com.example.ES2.models.CpuCooler;
-import com.example.ES2.models.CpuCooler;
-import com.example.ES2.repositories.CpuCoolerRepository;
+import com.example.ES2.repositories.Specific.CpuCoolerRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cpucooler")
@@ -24,28 +21,30 @@ public class CpuCoolerController {
     private CpuCoolerRepository cpuCoolerRepository;
 
     @GetMapping
-    public String exemplo(){
+    public String exemplo() {
         return "Exemplo de /api/cpucooler";
     }
 
     @GetMapping("/paged")
-    public ResponseEntity<Page<CpuCooler>> pagedByKey(
-            @RequestParam(defaultValue = "Name") String key,
-            @RequestParam(required = false) String value,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
+    public ResponseEntity<List<CpuCooler>> pagedByKey(@RequestParam(required = false) String value, @RequestBody Computer computer) {
         try {
-            Pageable paging = PageRequest.of(page, size);
-            Page<CpuCooler> pageCpuCoolers;
+            Map<String, String> andConditions = new HashMap<>();
+            Map<String, List<String>> orConditions = new HashMap<>();
 
-            if ("".equals(value)) {
-                pageCpuCoolers = cpuCoolerRepository.findAll(paging);
-            } else {
-                pageCpuCoolers = cpuCoolerRepository.pagedFindByKeyIgnoreCasing(paging, key, value);
+            if (!StringUtils.isBlank(value)) {
+                andConditions.put("Name", value);
             }
 
-            return new ResponseEntity<>(pageCpuCoolers, HttpStatus.OK);
+            if (computer != null) {
+                if (computer.getCpu() != null) {
+                    andConditions.put("CPU_Socket", computer.getCpu().getSocket());
+                } else if (computer.getMotherboard() != null) {
+                    andConditions.put("CPU_Socket", computer.getMotherboard().getSocket_CPU());
+                }
+            }
+            List<CpuCooler> result = cpuCoolerRepository.findByDynamicAndConditions(andConditions, orConditions, CpuCooler.class);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
